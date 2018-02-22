@@ -12,7 +12,10 @@ import qualified Language.Fortran.Util.Position as FU
 
 import Camfort.Analysis.Annotations  (A, unitAnnotation)
 import Camfort.Helpers
+
 import Data.Monoid
+import Data.Foldable (foldMap)
+import qualified Data.Map as M
 
 
 -- High-level idea-
@@ -27,10 +30,22 @@ import Data.Monoid
 --    (Tentative) Coverage of subscripts
 --    (Tentative) Overlapping subscripts
 
+-- Main data type for collecting analysis info
 data AnalysisInfo = AnalysisInfo
   {
-    categoryOne :: [(Filename, FU.Position)]
+    categoryOne :: [(Filename, BulkDataArrayInfo)]
   }
+  deriving (Show, Eq)
+
+-- Used to represent an array and any global (non-induction) variables
+-- used to index it
+data BulkDataArrayInfo = Array
+  {
+    arrayName  :: F.Name
+  -- , declPos    :: FU.Position
+  , indexNames :: [F.Name]
+  }
+  deriving (Show, Eq)
 
 instance Monoid AnalysisInfo where
   mempty = AnalysisInfo { categoryOne = [] }
@@ -40,4 +55,19 @@ instance Monoid AnalysisInfo where
     }
 
 analysis :: [(F.ProgramFile A, SourceText)] -> AnalysisInfo
-analysis _ = mempty
+analysis = foldMap analysisSingleFile
+
+-- singleFile for now, but we need to think about cross file definition of
+-- the global array
+analysisSingleFile :: (F.ProgramFile A, SourceText) -> AnalysisInfo
+analysisSingleFile (pf, src) = AnalysisInfo { categoryOne = arrayInfo }
+  where
+     filename     = F.pfGetFilename pf
+     pf'          = FA.initAnalysis pf
+     (pf'', tenv) = FAT.analyseTypes pf'
+
+     arrayInfo =
+       [ (filename, Array var []) |
+            (var, ty) <- M.toList tenv         -- forall types in the environment
+          , let FA.IDType _ (Just FA.CTArray) = ty -- ... which are arrays
+       ]
