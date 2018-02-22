@@ -9,5 +9,7 @@ import Camfort.Input
 main :: IO ()
 main = do
   let modFiles = []
-  file <- readParseSrcDir modFiles "exmaple.f90" []
-  return ()
+  pfs <- readParseSrcDir modFiles "example.f90" []
+  let analysisOutput = analysis pfs
+  -- Just raw print the output for now
+  print analysisOutput
