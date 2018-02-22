@@ -17,6 +17,7 @@ import Data.Monoid
 import Data.Foldable (foldMap)
 import qualified Data.Map as M
 
+import Debug.Trace
 
 -- High-level idea-
 --    There are two categories:
@@ -68,6 +69,6 @@ analysisSingleFile (pf, src) = AnalysisInfo { categoryOne = arrayInfo }
 
      arrayInfo =
        [ (filename, Array var []) |
-            (var, ty) <- M.toList tenv         -- forall types in the environment
-          , let FA.IDType _ (Just FA.CTArray) = ty -- ... which are arrays
+            -- forall types in the environment ... which are arrays
+            (var, ty@(FA.IDType _ (Just FA.CTArray))) <- M.toList tenv
        ]
