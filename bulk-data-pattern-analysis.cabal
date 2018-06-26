@@ -18,7 +18,7 @@ source-repository head
 executable bulk-data-analysis
   main-is:             Main.hs
   other-modules:       Analysis
-  build-depends:       base >=4.9 && <4.10,
+  build-depends:       base >=4.9,
                        camfort >= 0.903,
                        fortran-src >= 0.1.0.6,
                        containers >= 0.5.7.1,

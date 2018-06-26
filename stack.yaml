@@ -15,7 +15,7 @@
 # resolver:
 #  name: custom-snapshot
 #  location: "./custom-snapshot.yaml"
-resolver: lts-9.5
+resolver: lts-11.9
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -41,7 +41,7 @@ packages:
 - '../camfort'
 - location:
     git: https://github.com/camfort/verifiable-expressions.git
-    commit: 738183ae16a3179f0b71165bdaecd2fc17b206cc
+    commit: 4157b52a3445a9e71d8b630502100653a1dea89a
   extra-dep: true
 
 
@@ -50,9 +50,9 @@ packages:
 
 extra-deps:
 - partial-order-0.1.2.1
-- vinyl-0.6.0
+- vinyl-0.8.1.1
 - union-0.1.1.2
-- GenericPretty-1.2.1
+- GenericPretty-1.2.2
 - crackNum-1.9
 - syz-0.2.0.0
 - FloatingHex-0.4
