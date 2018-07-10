@@ -30,6 +30,7 @@ executable bulk-data-analysis
                        deepseq >= 1.4,
                        process >= 1.4.3.0, 
                        bytestring >= 0.10,
-                       verifiable-expressions >= 0.3
+                       verifiable-expressions >= 0.3,
+                       lens >= 4.15.1 && < 5
   hs-source-dirs:      src
   default-language:    Haskell2010
