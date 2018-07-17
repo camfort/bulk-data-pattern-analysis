@@ -105,7 +105,7 @@ condenseCategoryOne (AnalysisInfo c1 _) = amap
 
 -- filter only the interesting ones
 filterCondensedCategoryOne :: AMap -> AMap
-filterCondensedCategoryOne = M.filter (not . M.null . M.filter (all isJust . S.toList))
+filterCondensedCategoryOne = M.filter (not . M.null . M.filter ((> 1 ) . S.size) . M.filter (all isJust . S.toList))
 
 --------------------------------------------------
 
